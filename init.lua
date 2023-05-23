@@ -85,6 +85,15 @@ require("lazy").setup({
 		event = "VeryLazy",
 		"dcampos/nvim-snippy",
 	},
+	{
+		event = "VeryLazy",
+		"folke/neodev.nvim",
+		opts = {},
+	},
+	{
+		event = "VeryLazy",
+		"windwp/nvim-autopairs",
+	},
 })
 -- ColorTheme
 local current_theme_name = os.getenv('BASE16_THEME')
@@ -95,8 +104,12 @@ end
 -- Require Setup for Plugins
 require("mason").setup()
 require("mason-lspconfig").setup()
+require("neodev").setup({
+	-- add any options here, or leave empty to use the default settings
+})
+require("nvim-autopairs").setup({})
 --------------------- nvim cmp --------------------------------------
-local cmp = require 'cmp'
+local cmp = require ('cmp')
 
 local has_words_before = function()
 	unpack = unpack or table.unpack
@@ -105,7 +118,7 @@ local has_words_before = function()
 end
 
 local snippy = require("snippy")
-
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.setup({
 	snippet = {
 		-- REQUIRED - you must specify a snippet engine
@@ -185,7 +198,10 @@ cmp.setup.cmdline(':', {
 		{ name = 'cmdline' }
 	})
 })
-
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
@@ -197,6 +213,9 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
 lspconfig.clangd.setup {
 	capabilities = capabilities,
+	completion = {
+        callSnippet = "Replace"
+      },
 }
 lspconfig.lua_ls.setup {
 	settings = {
@@ -216,6 +235,9 @@ lspconfig.lua_ls.setup {
 			-- Do not send telemetry data containing a randomized but unique identifier
 			telemetry = {
 				enable = false,
+			},
+			completion = {
+				callSnippet = "Replace"
 			},
 		},
 	},
