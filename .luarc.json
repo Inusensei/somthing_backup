@@ -1,0 +1,15 @@
+{
+    "workspace.library": [
+        "/home/sun/.config/nvim",
+        "/home/sun/.local/share/nvim/lazy/lazy.nvim",
+        "/home/sun/.local/share/nvim/lazy/nvim-lspconfig",
+        "/home/sun/.local/share/nvim/lazy/mason-lspconfig.nvim",
+        "/home/sun/.local/share/nvim/lazy/mason.nvim",
+        "/home/sun/.local/share/nvim/lazy/nvim-base16",
+        "/usr/share/nvim/runtime",
+        "/usr/share/nvim/runtime/pack/dist/opt/matchit",
+        "/usr/lib/nvim",
+        "/home/sun/.local/state/nvim/lazy/readme",
+        "${3rd}/luassert/library"
+    ]
+}
