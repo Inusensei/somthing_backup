@@ -94,6 +94,11 @@ require("lazy").setup({
 		event = "VeryLazy",
 		"windwp/nvim-autopairs",
 	},
+	{
+		event = "VeryLazy",
+		"tpope/vim-fugitive",
+		cmd = "Git",
+	},
 })
 -- ColorTheme
 local current_theme_name = os.getenv('BASE16_THEME')
