@@ -2,7 +2,6 @@
 local set = vim.o
 local cmd = vim.cmd
 local g = vim.g
-local fn = vim.fn
 -- Set Line Number and Relative number
 set.number = true
 set.relativenumber = true
@@ -53,6 +52,16 @@ require("lazy").setup({
 	{
 		"RRethy/nvim-base16",
 		lazy = true,
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		config = function ()
+			require("lualine").setup({})
+		end,
+		dependencies = {
+			'kyazdani42/nvim-web-devicons'
+		},
+		opts = {},
 	},
 	{
 		event = "VeryLazy",
