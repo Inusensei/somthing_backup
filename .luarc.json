@@ -10,6 +10,7 @@
         "/usr/share/nvim/runtime/pack/dist/opt/matchit",
         "/usr/lib/nvim",
         "/home/sun/.local/state/nvim/lazy/readme",
-        "${3rd}/luassert/library"
+        "${3rd}/luassert/library",
+        "/home/sun/.local/share/nvim/mason/packages/lua-language-server/libexec/meta/67bde40d"
     ]
 }
