@@ -55,13 +55,27 @@ require("lazy").setup({
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		config = function ()
+		config = function()
 			require("lualine").setup({})
 		end,
 		dependencies = {
 			'kyazdani42/nvim-web-devicons'
 		},
 		opts = {},
+	},
+	{
+		keys = {
+			{ "<leader>t", ":NERDTreeToggle<CR>", desc = "toggle nerdtree" },
+			{ "<leader>l", ":NERDTreeFind<CR>",   desc = "find this file" },
+		},
+		cmd = { "NERDTreeToggle", "NERDTree", "NERDTreeFind" },
+		config = function()
+			vim.cmd([[
+			let NERDTreeShowLineNumbers=1
+			autocmd FileType nerdtree setlocal relativenumber
+			]])
+		end,
+		"preservim/nerdtree",
 	},
 	{
 		event = "VeryLazy",
@@ -131,7 +145,7 @@ require("neodev").setup({
 })
 require("nvim-autopairs").setup({})
 --------------------- nvim cmp --------------------------------------
-local cmp = require ('cmp')
+local cmp = require('cmp')
 
 local has_words_before = function()
 	unpack = unpack or table.unpack
@@ -221,8 +235,8 @@ cmp.setup.cmdline(':', {
 	})
 })
 cmp.event:on(
-  'confirm_done',
-  cmp_autopairs.on_confirm_done()
+	'confirm_done',
+	cmp_autopairs.on_confirm_done()
 )
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -236,8 +250,8 @@ local lspconfig = require('lspconfig')
 lspconfig.clangd.setup {
 	capabilities = capabilities,
 	completion = {
-        callSnippet = "Replace"
-      },
+		callSnippet = "Replace"
+	},
 }
 lspconfig.html.setup {
 	capabilities = capabilities,
@@ -319,43 +333,62 @@ local dap = require('dap')
 local dapui = require('dapui')
 dapui.setup()
 dap.adapters.codelldb = {
-  type = 'server',
-  host = '127.0.0.1',
-  port = 13000 -- 💀 Use the port printed out or specified with `--port`
+	type = 'server',
+	host = '127.0.0.1',
+	port = 13000 -- 💀 Use the port printed out or specified with `--port`
 }
 dap.adapters.codelldb = {
-  type = 'server',
-  port = "${port}",
-  executable = {
-    -- CHANGE THIS to your path!
-    command = '/home/sun/.software/codelldb/extension/adapter/codelldb',
-    args = {"--port", "${port}"},
+	type = 'server',
+	port = "${port}",
+	executable = {
+		-- CHANGE THIS to your path!
+		command = '/home/sun/.software/codelldb/extension/adapter/codelldb',
+		args = { "--port", "${port}" },
 
-    -- On windows you may have to uncomment this:
-    -- detached = false,
-  }
+		-- On windows you may have to uncomment this:
+		-- detached = false,
+	}
 }
 dap.configurations.cpp = {
-  {
-    name = "Launch file",
-    type = "codelldb",
-    request = "launch",
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    cwd = '${workspaceFolder}',
-    stopOnEntry = false,
-  },
+	{
+		name = "Launch file",
+		type = "codelldb",
+		request = "launch",
+		program = function()
+			return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+		end,
+		cwd = '${workspaceFolder}',
+		stopOnEntry = false,
+	},
 }
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
+	dapui.open()
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
+	dapui.close()
 end
 dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
+	dapui.close()
 end
+
+vim.keymap.set("n", "<leader>dr", function()
+	require("dap").continue()
+end)
+vim.keymap.set("n", "<leader>db", function()
+	require("dap").toggle_breakpoint()
+end)
+vim.keymap.set("n", "<leader>dn", function()
+	require("dap").step_over()
+end)
+vim.keymap.set("n", "<leader>di", function()
+	require("dap").step_into()
+end)
+vim.keymap.set("n", "<leader>do", function()
+	require("dap").step_out()
+end)
+vim.keymap.set("n", "<leader>ds", function()
+	require("dap").disconnect()
+end)
